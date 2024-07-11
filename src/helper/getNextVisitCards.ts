@@ -27,36 +27,35 @@ class EmrService {
 
   public static async getNextVisitCards(emrId: string): Promise<NextVisitCard[]> {
     const query = `SELECT
-    JSON_EXTRACT(
-        CONVERT(
-            AES_DECRYPT(
-                encripted_json_data,
-               ?
-            ) USING 'utf8'
-        ),
-        '$.${EmrService.CARDDATA[EmrService.NEXTVISITREMINDER_CARD_CATEGORY]}[0].reminder_date'
-    ) AS reminder_date,
-    JSON_EXTRACT(
-        CONVERT(
-            AES_DECRYPT(
-                encripted_json_data,
-                ?
-            ) USING 'utf8'
-        ),
-        '$.${EmrService.CARDDATA[EmrService.NEXTVISITREMINDER_CARD_CATEGORY]}[0].reminder_description'
-    ) AS reminder_description,
-    ted.emr_detail_Id
-FROM
-    tbl_emr_details AS ted
-WHERE
-    ted.card_category_Id = ${EmrService.NEXTVISITREMINDER_CARD_CATEGORY} AND ted.emr_Id = ?  AND ted.is_active = 1 AND ted.is_deleted = 0
-GROUP BY
-    ted.emr_detail_Id
-ORDER BY
-    reminder_date ASC`
-
+                      JSON_EXTRACT(
+                          CONVERT(
+                              AES_DECRYPT(
+                                  encripted_json_data,
+                                ?
+                              ) USING 'utf8'
+                          ),
+                          '$.${EmrService.CARDDATA[EmrService.NEXTVISITREMINDER_CARD_CATEGORY]}[0].reminder_date'
+                      ) AS reminder_date,
+                      JSON_EXTRACT(
+                          CONVERT(
+                              AES_DECRYPT(
+                                  encripted_json_data,
+                                   ?
+                              ) USING 'utf8'
+                          ),
+                          '$.${EmrService.CARDDATA[EmrService.NEXTVISITREMINDER_CARD_CATEGORY]}[0].reminder_description'
+                      ) AS reminder_description,
+                      ted.emr_detail_Id
+                  FROM
+                      tbl_emr_details AS ted
+                  WHERE
+                      ted.card_category_Id = ${EmrService.NEXTVISITREMINDER_CARD_CATEGORY} AND ted.emr_Id = ?  AND ted.is_active = 1 AND ted.is_deleted = 0
+                  GROUP BY
+                      ted.emr_detail_Id
+                  ORDER BY
+                      reminder_date ASC`
     // console.log(query)
-
+  
     const MYSQL_ENCRYPTION_KEY = process.env.MYSQL_ENCRYPTION_KEY;
     const results = await readConnection.select(query, [
       MYSQL_ENCRYPTION_KEY,

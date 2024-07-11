@@ -49,7 +49,7 @@ export const frontDeskPatientList = async (req: Request, res: Response, next: Ne
         let i = 0;
 
         while (i < resp.length) {
-            const val = resp[i];
+            const val = resp[i];    
             val.is_expired = val.is_expired === '1';
             const pay = await getPatientBillPayment(val.emr_Id);
             val.total_bill = pay[0].total_bill ?? "0";

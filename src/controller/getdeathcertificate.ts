@@ -94,7 +94,6 @@ async function getDeathCertificates(
             const qParam = `%${data.q}%`;
             values.push(qParam, qParam, qParam, qParam);
         }
-
         query += `
         GROUP BY e.emr_Id
         ORDER BY ${order_by} ${order_by_dir}

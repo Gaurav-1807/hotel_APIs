@@ -51,8 +51,6 @@ export const getEmrCommission = async (
 
         const res = await readConnection.select(query1, [clinicReferIds, emrId]);
 
-        //   logToDebugLog("Get Clinic transaction for commission >> ", query1);
-
         const filter: ClinicServicePrice[] = res.map((val: any) => ({
             clinic_service_price_Id: val.clinic_service_price_Id,
             service_id: val.service_id,
@@ -85,8 +83,7 @@ export const getEmrCommission = async (
             AND ct.emr_Id = ?
             AND ct.is_deleted = 0
             AND ct.is_archived = 0
-            AND ct.emr_payment_Id IS NULL;
-        `;
+            AND ct.emr_payment_Id IS NULL;`;
             const commission = await readConnection.select(query2, [Object.keys(last), emrId]);
             commission.forEach((co: Commission) => {
                 if (last[co.clinic_service_price_Id]) {

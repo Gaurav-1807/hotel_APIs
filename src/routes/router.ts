@@ -31,6 +31,7 @@ import { frontDeskPatientList } from '../controller/get_frontDeskPatientList';
 import { frontDeskPatientListValidator } from '../middlewares/frontDeskPatientListValidator';
 import { getFrontResentList } from '../helper/get_front_resent_list';
 import { chechauth } from '../middlewares/checkauth';
+import { checklogin } from '../controller/check_login';
 
 
 const routes = Router();
@@ -63,9 +64,11 @@ routes.get("/userdetails", userdetails.userdetails);
 
 routes.post("/addproducts", validationforproduct, upload.single('image'), addproducts.addproducts);
 
-
 routes.get("/employedetails", employedetails.employedetails)
 routes.post("/createemploye" , createemployee.createemployee)
 routes.get("/maxandminsalary",maxandminsalary.maxandminsalary)
 routes.use(multererror.multererror);
+
+
+routes.post("/checklogin", checklogin.checklogin)
 export default routes;
